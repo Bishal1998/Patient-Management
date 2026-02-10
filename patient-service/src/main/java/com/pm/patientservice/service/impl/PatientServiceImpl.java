@@ -1,5 +1,6 @@
 package com.pm.patientservice.service.impl;
 
+import com.pm.patientservice.dto.PatientRequestDto;
 import com.pm.patientservice.dto.PatientResponseDto;
 import lombok.RequiredArgsConstructor;
 import com.pm.patientservice.mapper.PatientMapper;
@@ -21,5 +22,18 @@ public class PatientServiceImpl implements PatientService {
         List<Patient> patients = patientRepository.findAll();
 
         return patients.stream().map(PatientMapper::toDto).toList();
+    }
+
+    @Override
+    public PatientResponseDto createPatient(PatientRequestDto patientRequestDto) {
+        patientRepository.findByEmail(patientRequestDto.email()).ifPresent(p -> {
+            throw new RuntimeException("Email already exists");
+        });
+
+        Patient newPatient = PatientMapper.toPatient(patientRequestDto);
+
+        Patient savedPatient = patientRepository.save(newPatient);
+
+        return PatientMapper.toDto(savedPatient);
     }
 }
