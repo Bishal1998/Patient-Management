@@ -1,4 +1,4 @@
-package model;
+package com.pm.patientservice.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -16,8 +16,8 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "patients")
-public class PatientEntity {
+@Table(name = "patient")
+public class Patient {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
