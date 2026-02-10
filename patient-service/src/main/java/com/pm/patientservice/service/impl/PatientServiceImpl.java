@@ -2,6 +2,7 @@ package com.pm.patientservice.service.impl;
 
 import com.pm.patientservice.dto.PatientRequestDto;
 import com.pm.patientservice.dto.PatientResponseDto;
+import com.pm.patientservice.exception.EmailAlreadyExistsException;
 import lombok.RequiredArgsConstructor;
 import com.pm.patientservice.mapper.PatientMapper;
 import com.pm.patientservice.model.Patient;
@@ -27,7 +28,7 @@ public class PatientServiceImpl implements PatientService {
     @Override
     public PatientResponseDto createPatient(PatientRequestDto patientRequestDto) {
         patientRepository.findByEmail(patientRequestDto.email()).ifPresent(p -> {
-            throw new RuntimeException("Email already exists");
+            throw new EmailAlreadyExistsException("Email already exists: " + patientRequestDto.email());
         });
 
         Patient newPatient = PatientMapper.toPatient(patientRequestDto);
