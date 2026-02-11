@@ -1,5 +1,6 @@
 package com.pm.patientservice.dto;
 
+import com.pm.patientservice.dto.validators.CreatePatientValidationGroup;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -22,7 +23,7 @@ public record PatientRequestDto(
         @NotNull(message = "Date of birth can not be blank.")
         LocalDate dateOfBirth,
 
-        @NotNull(message = "Registered date can not be blank.")
+        @NotNull(message = "Registered date can not be blank.", groups = CreatePatientValidationGroup.class)
         LocalDate registeredDate
 ) {
 }
