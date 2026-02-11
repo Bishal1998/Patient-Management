@@ -3,6 +3,7 @@ package com.pm.patientservice.service.impl;
 import com.pm.patientservice.dto.PatientRequestDto;
 import com.pm.patientservice.dto.PatientResponseDto;
 import com.pm.patientservice.exception.EmailAlreadyExistsException;
+import com.pm.patientservice.exception.PatientNotFoundException;
 import lombok.RequiredArgsConstructor;
 import com.pm.patientservice.mapper.PatientMapper;
 import com.pm.patientservice.model.Patient;
@@ -10,7 +11,9 @@ import org.springframework.stereotype.Service;
 import com.pm.patientservice.repository.PatientRepository;
 import com.pm.patientservice.service.PatientService;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -36,5 +39,24 @@ public class PatientServiceImpl implements PatientService {
         Patient savedPatient = patientRepository.save(newPatient);
 
         return PatientMapper.toDto(savedPatient);
+    }
+
+    @Override
+    public PatientResponseDto updatePatient(UUID id, PatientRequestDto patientRequestDto) {
+
+        Patient patient = patientRepository.findById(id).orElseThrow(() -> new PatientNotFoundException("Patient with id: " + id + " not found."));
+
+        patientRepository.findByEmail(patientRequestDto.email()).filter(p-> !p.getId().equals(id)).ifPresent(p -> {
+            throw new EmailAlreadyExistsException("Email already exists: " + patientRequestDto.email());
+        });
+
+            patient.setName(patientRequestDto.name());
+            patient.setEmail(patientRequestDto.email());
+            patient.setAddress(patientRequestDto.address());
+            patient.setDateOfBirth(patientRequestDto.dateOfBirth());
+
+        Patient updatedPatient = patientRepository.save(patient);
+
+        return PatientMapper.toDto(updatedPatient);
     }
 }
