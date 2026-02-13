@@ -1,0 +1,37 @@
+services:
+  db:
+    image: postgres:16
+    container_name: patient_service_postgres
+    environment:
+      POSTGRES_DB: patient_service_db
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+    ports:
+      - "5433:5432"
+    volumes:
+      - patient_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin -d patient_service_db"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  patient-service:
+    build: .
+    container_name: patient_service_app
+    ports:
+      - "4000:4000"
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/patient_service_db
+      SPRING_DATASOURCE_USERNAME: admin
+      SPRING_DATASOURCE_PASSWORD: admin
+
+
+
+volumes:
+  patient_pgdata:
+
+
