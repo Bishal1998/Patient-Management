@@ -17,7 +17,8 @@ services:
       retries: 20
 
   patient-service:
-    build: .
+    image: patient-service
+    build: ./patient-service
     container_name: patient_service_app
     ports:
       - "4000:4000"
@@ -28,6 +29,18 @@ services:
       SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/patient_service_db
       SPRING_DATASOURCE_USERNAME: admin
       SPRING_DATASOURCE_PASSWORD: admin
+
+  billing-service:
+    image: billing-service
+    build: ./billing-service
+    container_name: billing_service_app
+    ports:
+      - "4001:4001"
+      - "9001:9001"
+    depends_on:
+      patient-service:
+        condition: service_started
+
 
 
 
