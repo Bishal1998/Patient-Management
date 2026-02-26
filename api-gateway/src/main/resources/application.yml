@@ -8,15 +8,15 @@ spring:
         - id: patient-service-route
           uri: http://patient-service:4000
           predicates:
-            - path=/api/patient/**
+            - Path=/api/patients/**
           filters:
-            - strip-prefix=1
+            - StripPrefix=1
           ## Client -> http://localhost:4000/api/patients
           ## API Gateway -> http://patient-service:4000/patients
 
         - id: api-docs-patient-route
           uri: http://patient-service:4000
           predicates:
-              - path=/api-docs/patients
+              - Path=/api-docs/patients
           filters:
-              - rewrite-paths=/api-docs/patients,/v3/api-docs
+              - RewritePaths=/api-docs/patients,/v3/api-docs
