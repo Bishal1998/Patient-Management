@@ -17,32 +17,32 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/patients")
+@RequestMapping({"/patients", "/patients/"})
 @RequiredArgsConstructor
 @Tag(name = "Patient", description = "API for Patient Management")
 public class PatientController {
 
     private final PatientService patientService;
 
-    @GetMapping
+    @GetMapping({"", "/"})
     @Operation(summary = "Get all Patients")
     public ResponseEntity<List<PatientResponseDto>> getAllPatients(){
         return ResponseEntity.ok(patientService.getAllPatients());
     }
 
-    @PostMapping
+    @PostMapping({"","/"})
     @Operation(summary = "Create a Patient")
     public ResponseEntity<PatientResponseDto> createPatient(@Validated({Default.class, CreatePatientValidationGroup.class}) @RequestBody PatientRequestDto requestDto){
         return new ResponseEntity<>(patientService.createPatient(requestDto), HttpStatus.CREATED);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping({"/{id}", "/{id}/"})
     @Operation(summary = "Update a Patient")
     public ResponseEntity<PatientResponseDto> updatePatient(@PathVariable UUID id, @Validated({Default.class}) @RequestBody PatientRequestDto patientRequestDto){
         return ResponseEntity.ok(patientService.updatePatient(id, patientRequestDto));
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping({"/{id}", "/{id}/"})
     @Operation(summary = "Delete a Patient")
     public ResponseEntity<Void> deletePatient(@PathVariable UUID id){
         patientService.deletePatient(id);
