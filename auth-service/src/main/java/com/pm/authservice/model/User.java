@@ -20,7 +20,8 @@ public class User {
     private UUID id;
 
     @Column(nullable = false, unique = true)
-    private Email email;
+    @Email
+    private String email;
 
     @Column(nullable = false)
     private String password;
