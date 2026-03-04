@@ -1,7 +1,6 @@
 package com.pm.authservice.service.impl;
 
 import com.pm.authservice.dto.LoginRequestDTO;
-import com.pm.authservice.model.User;
 import com.pm.authservice.repository.AuthRepository;
 import com.pm.authservice.service.AuthService;
 import com.pm.authservice.util.JwtUtil;
