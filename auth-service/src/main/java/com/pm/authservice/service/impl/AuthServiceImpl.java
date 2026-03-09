@@ -25,4 +25,9 @@ public class AuthServiceImpl implements AuthService {
                 .filter(user -> passwordEncoder.matches(loginRequestDTO.getPassword(), user.getPassword()))
                 .map(user -> jwtUtil.generateToken(user.getEmail(), user.getRole()));
     }
+
+    @Override
+    public boolean validateToken(String authHeader) {
+        return true;
+    }
 }
