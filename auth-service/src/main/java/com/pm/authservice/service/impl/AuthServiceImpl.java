@@ -4,6 +4,7 @@ import com.pm.authservice.dto.LoginRequestDTO;
 import com.pm.authservice.repository.AuthRepository;
 import com.pm.authservice.service.AuthService;
 import com.pm.authservice.util.JwtUtil;
+import io.jsonwebtoken.JwtException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -28,6 +29,11 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public boolean validateToken(String authHeader) {
-        return true;
+        try{
+            jwtUtil.validateToken(authHeader);
+            return true;
+        } catch (JwtException e) {
+            return false;
+        }
     }
 }
