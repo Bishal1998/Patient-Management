@@ -11,6 +11,8 @@ spring:
             - Path=/api/patients/**
           filters:
             - StripPrefix=1
+            - JwtValidation
+            ## This JwtValidation will check by the spring and suffix with the GatewayFilterFactory automatically and forward with the JwtValidatiinFatewayFilterFactory class we create for the token validation.
 
         - id: auth-service-route
           uri: http://auth-service:4005
