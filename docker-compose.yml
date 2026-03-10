@@ -37,6 +37,7 @@ services:
       SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
       SPRING_JPA_SHOW_SQL: true
+      SPRING_SQL_INIT_MODE: always
 
   billing-service:
     image: billing-service
@@ -92,8 +93,12 @@ services:
     container_name: api_gateway_app
     ports:
       - "4004:4004"
+    environment:
+      AUTH_SERVICE_URL: http://auth-service:4005
     depends_on:
       patient-service:
+        condition: service_started
+      auth-service:
         condition: service_started
 
   auth-db:
